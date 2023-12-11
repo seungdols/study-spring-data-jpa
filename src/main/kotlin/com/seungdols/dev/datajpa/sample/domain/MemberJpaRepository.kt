@@ -14,5 +14,21 @@ class MemberJpaRepository(
         return member
     }
 
+    fun delete(member: Member): Unit {
+        em.remove(member)
+    }
+
+    fun count(): Long {
+        return em.createQuery("select count(m) from Member m", Long::class.java).singleResult
+    }
+
+    fun findById(id: Long): Member? {
+        return em.find(Member::class.java, id)
+    }
+
     fun find(id: Long): Member = em.find(Member::class.java, id)
+
+    fun findAll(): List<Member> {
+        return em.createQuery("select m from Member m", Member::class.java).resultList
+    }
 }
