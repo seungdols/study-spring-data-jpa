@@ -7,9 +7,14 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
+import jakarta.persistence.NamedQuery
 import jakarta.persistence.OneToMany
 
 @Entity
+@NamedQuery(
+    name = "Member.findByUsername",
+    query = "select m from Member m where m.username = :username"
+)
 class Member(
     @Id @GeneratedValue
     @Column(name = "member_id")
