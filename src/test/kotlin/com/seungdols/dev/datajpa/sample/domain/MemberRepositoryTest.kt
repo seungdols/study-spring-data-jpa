@@ -78,4 +78,22 @@ class MemberRepositoryTest(
         val count = memberRepository.count()
         assertThat(count).isEqualTo(0)
     }
+
+    @Test
+    fun `findByUsernameAndAgeGreaterThan 테스트`() {
+        val member1 = Member().apply {
+            username = "AAA"
+            age = 10
+        }
+        val member2 = Member().apply {
+            username = "AAA"
+            age = 20
+        }
+        val saveMember1 = memberRepository.save(member1)
+        val saveMember2 = memberRepository.save(member2)
+
+        val members = memberRepository.findByUsernameAndAgeGreaterThan("AAA", 15)
+        assertThat(members.first().username).isEqualTo("AAA")
+        assertThat(members.first().age).isEqualTo(20)
+    }
 }
