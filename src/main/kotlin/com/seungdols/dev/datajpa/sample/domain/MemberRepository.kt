@@ -9,4 +9,7 @@ interface MemberRepository : JpaRepository<Member, Long> {
 
     @Query(name = "Member.findByUsername")
     fun findByUsername(@Param("username") username: String): List<Member>
+
+    @Query("select m from Member m where m.username = :username and m.age = :age")
+    fun findUser(@Param("username") username: String, @Param("age") age: Int): List<Member>
 }
