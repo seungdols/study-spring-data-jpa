@@ -16,9 +16,14 @@ interface MemberRepository : JpaRepository<Member, Long> {
 
     @Query("select m.username from Member m")
     fun findUsernames(): List<String>
+
     @Query("select new com.seungdols.dev.datajpa.sample.dto.MemberDto(m.id, m.username, t.name) from Member m join m.team t")
     fun findMemberDto(): List<MemberDto>
 
     @Query("select m from Member m where m.username in :names")
     fun findByNames(@Param("names") names: List<String>): List<Member>
+
+    fun findListByUsername(username: String): List<Member> // collection
+    fun findMemberByUsername(username: String): Member // single
+    fun findOptionalByUsername(username: String): Member? // nullable
 }
