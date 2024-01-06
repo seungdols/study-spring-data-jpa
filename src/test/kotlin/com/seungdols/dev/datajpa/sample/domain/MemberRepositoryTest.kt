@@ -157,4 +157,21 @@ class MemberRepositoryTest(
         }
         assertThat(members.size).isEqualTo(2)
     }
+
+    @Test
+    fun `findByNames 테스트`() {
+        val member1 = Member().apply {
+            username = "AAA"
+            age = 10
+        }
+        val member2 = Member().apply {
+            username = "BBB"
+            age = 20
+        }
+        val saveMember1 = memberRepository.save(member1)
+        val saveMember2 = memberRepository.save(member2)
+
+        val members = memberRepository.findByNames(listOf("AAA","BBB"))
+        assertThat(members.size).isEqualTo(2)
+    }
 }
