@@ -13,7 +13,8 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 @Rollback(false)
 class MemberRepositoryTest(
-    val memberRepository: MemberRepository
+    val memberRepository: MemberRepository,
+    val teamRepository: TeamRepository,
 ) {
     @Test
     fun `member 테스트`() {
@@ -112,5 +113,48 @@ class MemberRepositoryTest(
         val members = memberRepository.findUser("AAA", 10)
         assertThat(members.first().username).isEqualTo("AAA")
         assertThat(members.first().age).isEqualTo(10)
+    }
+
+    @Test
+    fun `findUsernames 테스트`() {
+        val member1 = Member().apply {
+            username = "AAA"
+            age = 10
+        }
+        val member2 = Member().apply {
+            username = "AAA"
+            age = 20
+        }
+        val saveMember1 = memberRepository.save(member1)
+        val saveMember2 = memberRepository.save(member2)
+
+        val members = memberRepository.findUsernames()
+        assertThat(members.size).isEqualTo(2)
+    }
+    @Test
+    fun `findMemberDto 테스트`() {
+        val team1 = Team().apply {
+            name = "Team1"
+        }
+        teamRepository.save(team1)
+        val member1 = Member().apply {
+            username = "AAA"
+            age = 10
+        }
+        member1.changeTeam(team1)
+        val saveMember1 = memberRepository.save(member1)
+
+        val member2 = Member().apply {
+            username = "BBB"
+            age = 20
+        }
+        member2.changeTeam(team1)
+        val saveMember2 = memberRepository.save(member2)
+
+        val members = memberRepository.findMemberDto()
+        for(member in members) {
+           println(member)
+        }
+        assertThat(members.size).isEqualTo(2)
     }
 }
