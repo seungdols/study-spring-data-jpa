@@ -1,6 +1,9 @@
 package com.seungdols.dev.datajpa.sample.domain
 
 import com.seungdols.dev.datajpa.sample.dto.MemberDto
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Slice
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
@@ -26,4 +29,6 @@ interface MemberRepository : JpaRepository<Member, Long> {
     fun findListByUsername(username: String): List<Member> // collection
     fun findMemberByUsername(username: String): Member // single
     fun findOptionalByUsername(username: String): Member? // nullable
+    fun findByAge(age: Int, pageable: Pageable): Page<Member>
+    fun findByAgeSlice(age: Int, pageable: Pageable): Slice<Member>
 }

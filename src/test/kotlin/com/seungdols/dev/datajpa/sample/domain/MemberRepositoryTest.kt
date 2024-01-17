@@ -4,6 +4,8 @@ import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.test.annotation.Rollback
 import org.springframework.test.context.TestConstructor
 import org.springframework.transaction.annotation.Transactional
@@ -189,5 +191,42 @@ class MemberRepositoryTest(
 
         val members = memberRepository.findListByUsername("AAA")
         assertThat(members.size).isEqualTo(1)
+    }
+
+    @Test
+    fun `paging 테스트`() {
+        @Test
+        fun `paging 테스트`() {
+            memberRepository.save(Member().apply {
+                username = "member1"
+                age = 10
+            })
+            memberRepository.save(Member().apply {
+                username = "member2"
+                age = 10
+            })
+            memberRepository.save(Member().apply {
+                username = "member3"
+                age = 10
+            })
+            memberRepository.save(Member().apply {
+                username = "member4"
+                age = 10
+            })
+            memberRepository.save(Member().apply {
+                username = "member5"
+                age = 10
+            })
+
+            val age = 10
+            val offset = 0
+            val limit = 3
+
+            val pageRequest = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "username"))
+            val memberPage = memberRepository.findByAge(age, pageRequest)
+
+            assertThat(memberPage.content.size).isEqualTo(3)
+            assertThat(memberPage.totalPages).isEqualTo(5)
+        }
     }
 }
