@@ -29,6 +29,5 @@ interface MemberRepository : JpaRepository<Member, Long> {
     fun findListByUsername(username: String): List<Member> // collection
     fun findMemberByUsername(username: String): Member // single
     fun findOptionalByUsername(username: String): Member? // nullable
-    fun findByAge(age: Int, pageable: Pageable): Page<Member>
-    fun findByAgeSlice(age: Int, pageable: Pageable): Slice<Member>
+    fun findByAge(age: Int, pageable: Pageable): Slice<Member>
 }
