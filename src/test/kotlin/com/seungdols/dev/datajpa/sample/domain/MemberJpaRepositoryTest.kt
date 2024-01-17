@@ -44,4 +44,38 @@ class MemberJpaRepositoryTest(
         assertThat(members.first().username).isEqualTo("AAA")
         assertThat(members.first().age).isEqualTo(20)
     }
+
+    @Test
+    fun `paging 테스트`() {
+        memberJpaRepository.save(Member().apply {
+            username = "member1"
+            age = 10
+        })
+        memberJpaRepository.save(Member().apply {
+            username = "member2"
+            age = 10
+        })
+        memberJpaRepository.save(Member().apply {
+            username = "member3"
+            age = 10
+        })
+        memberJpaRepository.save(Member().apply {
+            username = "member4"
+            age = 10
+        })
+        memberJpaRepository.save(Member().apply {
+            username = "member5"
+            age = 10
+        })
+
+        val age = 10
+        val offset = 0
+        val limit = 3
+
+        val members = memberJpaRepository.findByPage(age, offset, limit)
+        val totalCount = memberJpaRepository.totalCount(age)
+
+        assertThat(members.size).isEqualTo(3)
+        assertThat(totalCount).isEqualTo(5)
+    }
 }
