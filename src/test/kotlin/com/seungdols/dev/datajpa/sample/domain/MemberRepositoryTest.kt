@@ -1,5 +1,7 @@
 package com.seungdols.dev.datajpa.sample.domain
 
+import jakarta.persistence.EntityManager
+import jakarta.persistence.PersistenceContext
 import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -17,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional
 class MemberRepositoryTest(
     val memberRepository: MemberRepository,
     val teamRepository: TeamRepository,
+    @PersistenceContext
+    val em: EntityManager,
 ) {
     @Test
     fun `member 테스트`() {
@@ -228,5 +232,34 @@ class MemberRepositoryTest(
             assertThat(memberPage.content.size).isEqualTo(3)
 //            assertThat(memberPage.totalPages).isEqualTo(5)
         }
+    }
+    @Test
+    fun `bulkUpdate 테스트`() {
+        memberRepository.save(Member().apply {
+            username = "member1"
+            age = 10
+        })
+        memberRepository.save(Member().apply {
+            username = "member2"
+            age = 19
+        })
+        memberRepository.save(Member().apply {
+            username = "member3"
+            age = 20
+        })
+        memberRepository.save(Member().apply {
+            username = "member4"
+            age = 21
+        })
+        memberRepository.save(Member().apply {
+            username = "member5"
+            age = 40
+        })
+
+        val resultCount = memberRepository.bulkAgePlus(20)
+//        em.flush()
+//        em.clear()
+
+        assertThat(resultCount).isEqualTo(3)
     }
 }
