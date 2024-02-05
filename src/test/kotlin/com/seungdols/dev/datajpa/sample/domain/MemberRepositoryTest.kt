@@ -262,4 +262,36 @@ class MemberRepositoryTest(
 
         assertThat(resultCount).isEqualTo(3)
     }
+
+    @Test
+    fun findMemberLazy() {
+        val team1 = Team().apply {
+            name = "teamA"
+        }
+        val team2 = Team().apply {
+            name = "teamB"
+        }
+        teamRepository.save(team1)
+        teamRepository.save(team2)
+        val member1 = memberRepository.save(Member().apply {
+            username = "member1"
+            age = 10
+            changeTeam(team1)
+        })
+        val member2 = memberRepository.save(Member().apply {
+            username = "member2"
+            age = 19
+            changeTeam(team2)
+        })
+
+        em.flush()
+        em.clear()
+
+        val members = memberRepository.findMemberEntityGraph()
+
+        for (member in members) {
+            println("member = ${member.username}")
+            println("member.team = ${member.team?.name}")
+        }
+    }
 }
