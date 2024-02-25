@@ -294,4 +294,37 @@ class MemberRepositoryTest(
             println("member.team = ${member.team?.name}")
         }
     }
+
+    @Test
+    fun queryHint() {
+        val member = Member().apply {
+            username = "member1"
+            age = 10
+        }
+        memberRepository.save(member)
+
+        em.flush()
+        em.clear()
+
+        val findMember = memberRepository.findReadOnlyByUsername("member1")
+        findMember.username = "member2"
+
+        em.flush()
+
+    }
+    @Test
+    fun queryLock() {
+        val member = Member().apply {
+            username = "member1"
+            age = 10
+        }
+        memberRepository.save(member)
+
+        em.flush()
+        em.clear()
+
+        val findMembers= memberRepository.findLockByUsername("member1")
+
+
+    }
 }
