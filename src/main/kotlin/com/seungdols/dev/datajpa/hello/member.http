@@ -1,0 +1,5 @@
+GET localhost:8080/members/1
+
+###
+
+GET localhost:8080/members?page=1&size=20
