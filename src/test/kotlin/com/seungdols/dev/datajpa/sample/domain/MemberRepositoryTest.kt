@@ -339,4 +339,24 @@ class MemberRepositoryTest(
             println("member = ${member}")
         }
     }
+
+    @Test
+    fun jpaEventBaseEntity() {
+        val member = Member().apply {
+            username = "member1"
+            age = 10
+        }
+
+        memberRepository.save(member)
+
+        member.username = "member2"
+
+        em.flush()
+        em.clear()
+
+        val findMember = memberRepository.findById(member.id).get()
+
+        println("findMember = ${findMember.createdDate}")
+        println("findMember = ${findMember.updatedDate}")
+    }
 }
