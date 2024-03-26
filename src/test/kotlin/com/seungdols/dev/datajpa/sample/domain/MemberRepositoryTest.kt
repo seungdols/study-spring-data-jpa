@@ -324,7 +324,19 @@ class MemberRepositoryTest(
         em.clear()
 
         val findMembers= memberRepository.findLockByUsername("member1")
+    }
 
+    @Test
+    fun callCustom() {
+        val member = Member().apply {
+            username = "member1"
+            age = 10
+        }
+        memberRepository.save(member)
 
+        val result = memberRepository.findMemberCustom()
+        for (member in result) {
+            println("member = ${member}")
+        }
     }
 }
