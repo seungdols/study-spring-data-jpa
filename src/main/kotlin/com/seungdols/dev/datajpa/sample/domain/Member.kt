@@ -21,7 +21,7 @@ class Member(
     @Id @GeneratedValue
     @Column(name = "member_id")
     val id: Long = 0
-) : JpaBaseEntity() {
+) : BaseEntity() {
     var username: String = ""
     var age: Int = 0
 

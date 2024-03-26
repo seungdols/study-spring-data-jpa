@@ -356,7 +356,9 @@ class MemberRepositoryTest(
 
         val findMember = memberRepository.findById(member.id).get()
 
-        println("findMember = ${findMember.createdDate}")
-        println("findMember = ${findMember.updatedDate}")
+        println("findMember.createdDate = ${findMember.createdDate}")
+        println("findMember.lastModifiedDate = ${findMember.lastModifiedDate}")
+        println("findMember.createdBy = ${findMember.createdBy}")
+        println("findMember.lastModifiedBy = ${findMember.lastModifiedBy}")
     }
 }
