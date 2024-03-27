@@ -361,4 +361,39 @@ class MemberRepositoryTest(
         println("findMember.createdBy = ${findMember.createdBy}")
         println("findMember.lastModifiedBy = ${findMember.lastModifiedBy}")
     }
+
+    @Test
+    fun specifications() {
+        val temaA = Team().apply {
+            name = "teamA"
+        }
+        em.persist(temaA)
+
+        val member1 = Member().apply {
+            username = "member1"
+            age = 10
+            team = temaA
+        }
+
+        val member2 = Member().apply {
+            username = "member2"
+            age = 20
+            team = temaA
+        }
+
+        em.persist(member1)
+        em.persist(member2)
+
+        em.flush()
+        em.clear()
+
+        val memberSpecification = MemberSpec.username("member1").and(MemberSpec.teamName("teamA"))
+        val members = memberRepository.findAll(memberSpecification)
+
+        for (member in members) {
+            println("member = ${member}")
+        }
+
+        assertThat(members.size).isEqualTo(1)
+    }
 }
