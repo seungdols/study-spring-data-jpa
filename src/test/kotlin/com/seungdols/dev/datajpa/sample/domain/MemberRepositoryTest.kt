@@ -469,10 +469,10 @@ class MemberRepositoryTest(
         em.flush()
         em.clear()
 
-        val usernameOnlyList = memberRepository.findProjectionsByUsername("member1", UsernameOnlyDto::class.java)
+        val usernameOnlyList = memberRepository.findProjectionsByUsername("member1", NestedClosedProjections::class.java)
 
         for (usernameOnly in usernameOnlyList) {
-            println("usernameOnly = ${usernameOnly.username}")
+            println("usernameOnly = $usernameOnly")
         }
     }
 }
