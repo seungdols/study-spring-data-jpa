@@ -442,4 +442,36 @@ class MemberRepositoryTest(
 
         assertThat(members.size).isEqualTo(1)
     }
+
+    @Test
+    fun projections() {
+        val temaA = Team().apply {
+            name = "teamA"
+        }
+        em.persist(temaA)
+
+        val member1 = Member().apply {
+            username = "member1"
+            age = 10
+            team = temaA
+        }
+
+        val member2 = Member().apply {
+            username = "member2"
+            age = 20
+            team = temaA
+        }
+
+        em.persist(member1)
+        em.persist(member2)
+
+        em.flush()
+        em.clear()
+
+        val usernameOnlyList = memberRepository.findProjectionsByUsername("member1")
+
+        for (usernameOnly in usernameOnlyList) {
+            println("usernameOnly = ${usernameOnly.getUsername()}")
+        }
+    }
 }
