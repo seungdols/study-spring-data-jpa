@@ -6,6 +6,8 @@ import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.data.domain.Example
+import org.springframework.data.domain.ExampleMatcher
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.test.annotation.Rollback
@@ -393,6 +395,50 @@ class MemberRepositoryTest(
         for (member in members) {
             println("member = ${member}")
         }
+
+        assertThat(members.size).isEqualTo(1)
+    }
+
+    @Test
+    fun queryByExample() {
+        val temaA = Team().apply {
+            name = "teamA"
+        }
+        em.persist(temaA)
+
+        val member1 = Member().apply {
+            username = "member1"
+            age = 10
+            team = temaA
+        }
+
+        val member2 = Member().apply {
+            username = "member2"
+            age = 20
+            team = temaA
+        }
+
+        em.persist(member1)
+        em.persist(member2)
+
+        em.flush()
+        em.clear()
+
+       val member = Member().apply {
+            username = "member1"
+        }
+
+
+        val example = Example.of(member,
+        ExampleMatcher.matching()
+            .withIgnorePaths("id")
+            .withIgnorePaths("age")
+            .withIgnorePaths("lastModifiedDate")
+            .withIgnorePaths("createdDate")
+            .withIgnorePaths("createdBy")
+            .withIgnorePaths("lastModifiedBy")
+        )
+        val members = memberRepository.findAll(example)
 
         assertThat(members.size).isEqualTo(1)
     }
