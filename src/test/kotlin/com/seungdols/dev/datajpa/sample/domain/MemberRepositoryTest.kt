@@ -1,5 +1,6 @@
 package com.seungdols.dev.datajpa.sample.domain
 
+import com.seungdols.dev.datajpa.sample.dto.UsernameOnlyDto
 import jakarta.persistence.EntityManager
 import jakarta.persistence.PersistenceContext
 import org.assertj.core.api.Assertions
@@ -468,7 +469,7 @@ class MemberRepositoryTest(
         em.flush()
         em.clear()
 
-        val usernameOnlyList = memberRepository.findProjectionsByUsername("member1")
+        val usernameOnlyList = memberRepository.findProjectionsByUsername("member1", UsernameOnlyDto::class.java)
 
         for (usernameOnly in usernameOnlyList) {
             println("usernameOnly = ${usernameOnly.username}")
