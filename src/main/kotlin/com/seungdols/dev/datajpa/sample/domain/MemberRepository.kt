@@ -1,6 +1,7 @@
 package com.seungdols.dev.datajpa.sample.domain
 
 import com.seungdols.dev.datajpa.sample.dto.MemberDto
+import com.seungdols.dev.datajpa.sample.dto.UsernameOnlyDto
 import jakarta.persistence.LockModeType
 import jakarta.persistence.QueryHint
 import org.springframework.data.domain.Page
@@ -62,5 +63,5 @@ interface MemberRepository : JpaRepository<Member, Long>, MemberRepositoryCustom
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     fun findLockByUsername(username: String): List<Member>
 
-    fun findProjectionsByUsername(@Param("username") username: String): List<UsernameOnly>
+    fun findProjectionsByUsername(@Param("username") username: String): List<UsernameOnlyDto>
 }

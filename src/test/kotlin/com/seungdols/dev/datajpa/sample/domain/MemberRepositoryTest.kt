@@ -471,7 +471,7 @@ class MemberRepositoryTest(
         val usernameOnlyList = memberRepository.findProjectionsByUsername("member1")
 
         for (usernameOnly in usernameOnlyList) {
-            println("usernameOnly = ${usernameOnly.getUsername()}")
+            println("usernameOnly = ${usernameOnly.username}")
         }
     }
 }
