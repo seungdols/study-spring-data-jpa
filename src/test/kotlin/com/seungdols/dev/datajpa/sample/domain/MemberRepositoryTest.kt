@@ -1,6 +1,5 @@
 package com.seungdols.dev.datajpa.sample.domain
 
-import com.seungdols.dev.datajpa.sample.dto.UsernameOnlyDto
 import jakarta.persistence.EntityManager
 import jakarta.persistence.PersistenceContext
 import org.assertj.core.api.Assertions
@@ -473,6 +472,69 @@ class MemberRepositoryTest(
 
         for (usernameOnly in usernameOnlyList) {
             println("usernameOnly = $usernameOnly")
+        }
+    }
+
+    @Test
+    fun nativeQuery() {
+        val temaA = Team().apply {
+            name = "teamA"
+        }
+        em.persist(temaA)
+
+        val member1 = Member().apply {
+            username = "member1"
+            age = 10
+            team = temaA
+        }
+
+        val member2 = Member().apply {
+            username = "member2"
+            age = 20
+            team = temaA
+        }
+
+        em.persist(member1)
+        em.persist(member2)
+
+        em.flush()
+        em.clear()
+
+        val member = memberRepository.findByNativeQuery("member1")
+
+        println("member = $member")
+    }
+
+    @Test
+    fun nativeQueryPaging() {
+        val temaA = Team().apply {
+            name = "teamA"
+        }
+        em.persist(temaA)
+
+        val member1 = Member().apply {
+            username = "member1"
+            age = 10
+            team = temaA
+        }
+
+        val member2 = Member().apply {
+            username = "member2"
+            age = 20
+            team = temaA
+        }
+
+        em.persist(member1)
+        em.persist(member2)
+
+        em.flush()
+        em.clear()
+
+        val memberProjectionPage = memberRepository.findByNativeProjection(PageRequest.of(0, 10))
+        val content = memberProjectionPage.content
+
+        for (member in content) {
+            println("member = ${member.getId()}, ${member.getUsername()}, ${member.getTeamName()}")
         }
     }
 }
